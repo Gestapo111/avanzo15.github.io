@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cuestionario de Ciencias</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .question {
+            margin-bottom: 20px;
+        }
+        .question img {
+            max-width: 100%;
+            height: auto;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            border: 2px solid #000;
+            background-color: #f8f8f8;
+        }
+        .correct {
+            color: green;
+        }
+        .incorrect {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>REFUERZO AVANZO 1-2024</h1>
+    <form id="quizForm">
+        <div id="questionsContainer"></div>
+        <button type="button" onclick="calculateScore()">Enviar Respuestas</button>
+    </form>
+    <div id="resultContainer"></div>
+
+    <script>
+        const authorizedNIEs = [
+            "4267837", "3850952", "3851018", "5032035", 
+            "19806181", "6297536", "2608724", "6262810",
+            "4267838", "20162435", "3850923", "19806209", 
+            "4267828", "3850942"
+        ];
+
+        document.addEventListener("DOMContentLoaded", function () {
+            let userNIE = prompt("Por favor, ingrese su NIE:");
+            if (!authorizedNIEs.includes(userNIE)) {
+                alert("NIE no autorizado. No puedes acceder a este cuestionario.");
+                document.body.innerHTML = ''; // Borra el contenido de la página
+            }
+        });
+
+        const questions = [
+            {
+                text: "El traje de un buzo es impermeable al agua, se construye con fibras resistentes y caucho en su interior, con un cuello rodeado de un aro de metal y botas lastradas y pesadas. Desde el punto de vista de la hidrostática, todos estos elementos son necesarios para la siguiente función:",
+                options: [
+                    "A) contrarrestar el empuje que ejerce el agua sobre el buzo.",
+                    "B) favorecer el empuje que el buzo ejerce sobre el agua.",
+                    "C) facilitar la comunicación entre el buzo y el equipo de la superficie.",
+                    "D) adaptar al buzo a la presión submarina."
+                ],
+                correct: "A",
+                image: "https://i.postimg.cc/MZnhPqmH/1.png"
+            },
+            {
+                text: "El siguiente recipiente contiene un líquido; en su interior existe una presión originada por su mismo peso. Analiza el esquema y responde cuáles son los elementos que se deben tomar en cuenta para realizar el cálculo de la presión hidrostática ejercida en el punto A. ρ= densidad; g= gravedad; h= profundidad.",
+                options: [
+                    "A) ρ. g (hA - hB)",
+                    "B) ρ. g . hA",
+                    "C) ρ. g . hB",
+                    "D) ρ. g (hB + hA)"
+                ],
+                correct: "B"
+            },
+            {
+                text: "De los siguientes principios de la Hidrostática, selecciona los que son correctos.",
+                options: [
+                    "A) 1 y 2",
+                    "B) 2 y 3",
+                    "C) 2 y 4",
+                    "D) 3 y 4"
+                ],
+                correct: "C",
+                image: "https://i.postimg.cc/850mf87n/3.png"
+            },
+            {
+                text: "De los siguientes conceptos ¿cuál corresponde a la presión atmosférica?",
+                options: [
+                    "A) El estado de la atmósfera en un lugar y en un momento determinado.",
+                    "B) La fuerza que ejerce el aire sobre un determinado punto de la Tierra.",
+                    "C) El peso medio de la atmósfera durante un periodo determinado.",
+                    "D) La cantidad de agua caída sobre la superficie terrestre."
+                ],
+                correct: "B"
+            },
+            {
+                text: "En la figura se presentan 3 jeringas completamente selladas y con cierta cantidad de gas, ¿cuáles de las siguientes magnitudes varían en cada una de ellas?",
+                options: [
+                    "A) Masa y presión.",
+                    "B) Temperatura y volumen.",
+                    "C) Masa y temperatura.",
+                    "D) Volumen y presión."
+                ],
+                correct: "D",
+                image: "https://i.postimg.cc/xjBBBh6R/5.png"
+            },
+            {
+                text: "¿Qué le sucede a una lata de fijador para el cabello a una presión de 4 atm, y con una temperatura ambiente de 27 °C si se arroja al fuego y el envase alcanza los 402 °C? Nota: La lata puede explotar si la presión interna ejerce 6080 mm Hg.",
+                options: [
+                    "A) La lata explotará porque la nueva presión es de 9 atm.",
+                    "B) La lata no explotará porque la nueva presión es de 1,77 atm.",
+                    "C) La lata si explotará ya que la nueva presión es de 59.5 atm.",
+                    "D) La lata no explotará porque solo alcanza una presión de 1.60 atm."
+                ],
+                correct: "C",
+                image: "https://i.postimg.cc/gjLqvMRc/6.png"
+            },
+            {
+                text: "De acuerdo con el esquema, identifica cuál es la función del circuito eléctrico que se identifica con la letra C.",
+                options: [
+                    "A) Permitir la circulación de electrones desde el polo negativo al positivo.",
+                    "B) Facilitar el paso de corriente y generación del efecto.",
+                    "C) Determinar la cantidad de luz que puede circular.",
+                    "D) Impedir o permitir la circulación de electrones."
+                ],
+                correct: "D"
+            },
+            {
+                text: "La intensidad de la corriente es una magnitud que permite medir la cantidad de carga eléctrica que logra atravesar un conductor en un determinado tiempo. ¿Cuál es la unidad de medida de esta magnitud en el SI?",
+                options: [
+                    "A) Amperio, A.",
+                    "B) Ohmio, Ω.",
+                    "C) Watt, W.",
+                    "D) Voltio, V."
+                ],
+                correct: "A",
+                image: "https://i.postimg.cc/V5y94jBq/8.png"
+            },
+            {
+                text: "De los siguientes ejemplos seleccione los que en su uso producen un efecto mecánico y calorífico respectivamente.",
+                options: [
+                    "A) Bombillo y tostadora.",
+                    "B) Televisión y lavadora.",
+                    "C) Lavadora y plancha.",
+                    "D) Tostadora y bombillo."
+                ],
+                correct: "C",
+                image: "https://i.postimg.cc/c4YPWhjN/9.png"
+            },
+            {
+                text: "Una jeringa contiene 0.02 m3 de aire comprimido con una presión de 1,5 bar, ¿cuál será el volumen que ocuparía el aire si aumentamos la presión hasta 3 bar? Considerar: P1V1 = P2V2.",
+                options: [
+                    "A) 2.73 m3",
+                    "B) 1.0 m3",
+                    "C) 0.01 m3",
+                    "D) 0.001 m3"
+                ],
+                correct: "C",
+                image: "https://i.postimg.cc/6pXgpRJ4/10.png"
+            },
+            {
+                text: "Los avances en ciencia y tecnología a los que se hace referencia en el informe están encaminados a:",
+                options: [
+                    "A) propiciar el uso de las energías renovables que no afecten al medio ambiente.",
+                    "B) observar la extracción de las semillas de tempate, higuerillo y maní, para extraerles el aceite.",
+                    "C) promover las extracciones de aceite ya sea con fines de uso nacional o exportación.",
+                    "D) dar a conocer acerca de temas como el biodiesel, biomasa y calderas."
+                ],
+                correct: "D"
+            },
+            {
+                text: "La planta de biodiesel podría ser abastecedora de un producto sostenible porque:",
+                options: [
+                    "A) es un aporte importante para contribuir a la generación de empleos en el sector agroindustrial.",
+                    "B) los ácidos grasos provenientes de las semillas, se convierten en combustibles derivados de biomasa renovable para uso en motores de combustión interna.",
+                    "C) el biodiesel mejora la combustión de los vehículos y aumenta el oxígeno en la combustión permitiendo menos emisiones.",
+                    "D) el biodiesel brinda beneficios ambientales, desde la extracción de las materias primas hasta la disposición final del producto."
+                ],
+                correct: "B",
+                image: "https://i.postimg.cc/4xQM7dsL/12.png"
+            },
+            {
+                text: "Relaciona correctamente los elementos de un circuito eléctrico con sus respectivas características.",
+                options: [
+                    "A) 1-d, 2-e, 3-b, 4-c",
+                    "B) 2-a, 4-b, 1-c, 3-d",
+                    "C) 1-d, 2-c, 3-b, 4-a",
+                    "D) 4-e, 2-a, 3-c, 1-b"
+                ],
+                correct: "C",
+                image: "https://i.postimg.cc/R0CYcB0M/13.png"
+            },
+            {
+                text: "¿Cómo funciona el elemento que abastece de energía al circuito según el numeral 6?",
+                options: [
+                    "A) Con un generador químico de energía eléctrica que utiliza elementos capaces de desarrollar un flujo de electrones más intenso.",
+                    "B) Con un generador fotovoltaico de energía eléctrica que utiliza elementos capaces de desarrollar un flujo de electrones más intenso.",
+                    "C) A partir de la circulación de electrones desde el generador hasta llegar al bombillo para que se produzca energía luminosa.",
+                    "D) Con la circulación de los electrones de reserva que regresan a la fuente de energía después del recorrido."
+                ],
+                correct: "A"
+            },
+            {
+                text: "La interpretación correcta de la ubicación de los aparatos electrodomésticos, según los tipos de circuitos eléctricos, es:",
+                options: [
+                    "A) los alambres A y B mantienen un voltaje constante de 220 V; pero la corriente que circula por cada uno de los electrodomésticos es diferente.",
+                    "B) por el foco circula menos corriente que por la plancha y el televisor porque tiene menos resistencia al paso de la corriente.",
+                    "C) si se enciende la plancha, la corriente que circula es mayor porque presenta una resistencia alta al paso de la corriente.",
+                    "D) todos están en un arreglo en paralelo ya que la interrupción de la corriente en uno de ellos, provocaría que se desconecten los otros electrodomésticos."
+                ],
+                correct: "A"
+            },
+            {
+                text: "¿Cuál de los siguientes planteamientos corresponde a un circuito en serie?",
+                options: [
+                    "A) La corriente en cada una de las ramas no siempre es la misma.",
+                    "B) La intensidad total del circuito es la suma de las intensidades de cada rama.",
+                    "C) La resistencia total del circuito será siempre inferior a la menor de ellas.",
+                    "D) La corriente de cada uno de los resistores de un circuito siempre es la misma."
+                ],
+                correct: "D"
+            },
+            {
+                text: "Si la flecha 1, la medición máxima señala cuando el usuario establece la llamada y \"habla\" y la flecha 2, la medición máxima, que indica cuando el usuario establece la llamada y \"NO habla\", la tendencia de la cantidad de las ondas que recibe la persona es la siguiente.",
+                options: [
+                    "A) se mantiene una emisión constante de ondas de 1.5 voltios en ambos casos.",
+                    "B) hay una emisión mayor de ondas de 6.3 voltios cuando la persona está hablando.",
+                    "C) es bastante similar la máxima emisión de ondas en ambos casos.",
+                    "D) es mucho menor la emisión de ondas cuando la persona no está hablando."
+                ],
+                correct: "D",
+                image: "https://i.postimg.cc/xds454kL/19.png"
+            },
+            {
+                text: "Desde el punto de vista de la física, los efectos negativos que las radiaciones electromagnéticas causan en las personas se debe a:",
+                options: [
+                    "A) el número de ondas que pasan por un mismo punto en un segundo.",
+                    "B) el tipo de circuitos eléctricos de los aparatos que las generan.",
+                    "C) la emisión de ondas de baja frecuencia no ionizante.",
+                    "D) el voltaje generado, cuando supera la norma establecida."
+                ],
+                correct: "C",
+                image: "https://i.postimg.cc/rmKYPNW3/20.png"
+            },
+            {
+                text: "Selecciona la conclusión que mejor define la acción del enunciado anterior.",
+                options: [
+                    "A) Las cargas de signo opuesto, indican atracción.",
+                    "B) La electrización tiene dos cargas denominadas q1 y q2.",
+                    "C) Las fuerzas de las cargas eléctricas son diferentes en módulo y dirección.",
+                    "D) La fuerza de atracción o repulsión que ejercen entre sí las cargas eléctricas."
+                ],
+                correct: "D",
+                image: "https://i.postimg.cc/fLpgnSfL/21.png"
+            },
+            {
+                text: "Analiza el siguiente concepto “La electrostática engloba aquellos fenómenos donde se manifiestan las propiedades eléctricas de la materia, pero en condiciones estacionarias, que no cambian en el tiempo”. Elige la opción que mejor explica una adecuada conceptualización con base a la teoría atómica actual:",
+                options: [
+                    "A) El número de electrones en un material es igual al número de protones en equilibrio electrostático.",
+                    "B) En la electrización de un cuerpo, los electrones se manifiestan desde una región a otra.",
+                    "C) La carga eléctrica del átomo reside en los protones y neutrones.",
+                    "D) Un cuerpo se electriza porque gana electrones."
+                ],
+                correct: "D",
+                image: "https://i.postimg.cc/BbF7qZmC/22.png"
+            },
+            {
+                text: "Identifica los números que corresponden a los electrones y fuente de energía, respectivamente.",
+                options: [
+                    "A) 2 y 3",
+                    "B) 1 y 5",
+                    "C) 4 y 5",
+                    "D) 1 y 2"
+                ],
+                correct: "C"
+            },
+            {
+                text: "Una carga de 3600 coulombios pasa por un punto en un circuito eléctrico, durante media hora. ¿Cuál es la intensidad de corriente que pasó por el circuito?",
+                options: [
+                    "A) 2 A",
+                    "B) 120 A",
+                    "C) 1800 A",
+                    "D) 7200 A"
+                ],
+                correct: "A",
+                image: "https://i.postimg.cc/PfvRbKd8/24.png"
+            },
+            {
+                text: "De los siguientes elementos químicos, selecciona los que funcionan como semiconductores de la corriente eléctrica.",
+                options: [
+                    "A) Cobre- Silicio",
+                    "B) Oro - Aluminio",
+                    "C) Germanio- Hierro",
+                    "D) Silicio- Germanio"
+                ],
+                correct: "D",
+                image: "https://i.postimg.cc/J4wdpJhY/26.png"
+            },
+            {
+                text: "Identifica cuál de las siguientes acciones tiene su mejor aplicación tecnológica frente a fenómenos naturales y puede ser utilizada en la comunidad donde resides por su bajo costo.",
+                options: [
+                    "A) Ubicar antenas parabólicas.",
+                    "B) Hacer conexiones de polos tierra.",
+                    "C) Instalar detectores de tormentas eléctricas.",
+                    "D) Instalar pararrayos."
+                ],
+                correct: "D"
+            },
+            {
+                text: "Si un alambre de 0.3 m de largo transmite una corriente de 9 A y se encuentra en ángulo recto con un campo magnético con un valor de inducción magnética de 0.07 N/A.m, el proceso para resolver el problema es:",
+                options: [
+                    "A) Análisis del problema, identificación de datos, sustitución, aplicación y despeje de la fórmula, dar la respuesta con unidades.",
+                    "B) Identificación de la fórmula, sustitución de datos, dar la respuesta con unidades.",
+                    "C) Análisis del problema, identificación de datos, aplicación y despeje de la fórmula, sustitución, dar la respuesta con unidades.",
+                    "D) Análisis del problema, sustitución de datos en fórmula, dar respuesta del problema."
+                ],
+                correct: "A",
+                image: "https://i.postimg.cc/9FGgKMRm/29.png"
+            },
+            {
+                text: "A partir del planteamiento del problema anterior, ¿cuál es el valor aproximado de la fuerza que actúa sobre el alambre?",
+                options: [
+                    "A) 0.189 N",
+                    "B) 0.19 N",
+                    "C) 1.189 x 10^-1 N",
+                    "D) 1.19 x 10^-1 N"
+                ],
+                correct: "B"
+            },
+            {
+                text: "Observa la imagen la cual muestra una mano que representa la forma vectorial del campo magnético. Si el numeral 1 identifica el movimiento del cable conductor, los numerales 2 y 3 se refieren a:",
+                options: [
+                    "A) líneas de flujo magnético y circulación de la corriente eléctrica.",
+                    "B) circulación de la corriente eléctrica y líneas de flujo magnético.",
+                    "C) coseno de 90° y líneas de flujo magnético.",
+                    "D) sentido de corriente eléctrica y seno de 90°."
+                ],
+                correct: "B"
+            },
+            {
+                text: "¿Qué parte de la relación permite que el clavo se comporte como electroimán?",
+                options: [
+                    "A) La posición de los polos de norte a sur.",
+                    "B) La posición de la pila.",
+                    "C) La posición de los polos positivo - negativo.",
+                    "D) El paso de corriente eléctrica por el cable."
+                ],
+                correct: "D"
+            },
+            {
+                text: "Un trabajador en el estero de Jaltepeque, necesita transportar 2 m3 de madera de Mangle seca, cuya densidad es de 1030 kg/m3 y tiene un cayuco que puede desplazar 1.80 m3. Si la densidad del agua del estero es de 1027 kg/m3. ¿La fuerza de empuje será suficiente para transportar la madera?",
+                options: [
+                    "A) No se puede transportar porque el empuje es menor que la carga.",
+                    "B) Sí se puede transportar porque el empuje es mayor que la carga.",
+                    "C) La carga es menor que el empuje.",
+                    "D) El empuje es mayor o similar al de la carga."
+                ],
+                correct: "A"
+            },
+            {
+                text: "Calcular la fuerza que se obtendrá en el émbolo mayor de una prensa hidráulica cuya área es de 1.5 m2, cuando en el émbolo menor es 0.85 m2, en la cual se aplica una fuerza de 225 N.",
+                options: [
+                    "A) 264.7 N.",
+                    "B) 127.5 N.",
+                    "C) 397 N.",
+                    "D) 286.8 N."
+                ],
+                correct: "A"
+            }
+        ];
+
+        // Barajar las preguntas
+        questions.sort(() => Math.random() - 0.5);
+
+        const questionsContainer = document.getElementById('questionsContainer');
+
+        questions.forEach((question, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.className = 'question';
+
+            const questionText = document.createElement('p');
+            questionText.innerText = `${index + 1}. ${question.text}`;
+            questionDiv.appendChild(questionText);
+
+            if (question.image) {
+                const questionImage = document.createElement('img');
+                questionImage.src = question.image;
+                questionDiv.appendChild(questionImage);
+            }
+
+            question.options.forEach(option => {
+                const optionLabel = document.createElement('label');
+                optionLabel.style.display = "block";
+
+                const optionInput = document.createElement('input');
+                optionInput.type = 'radio';
+                optionInput.name = `question${index}`;
+                optionInput.value = option.charAt(0);
+
+                optionLabel.appendChild(optionInput);
+                optionLabel.appendChild(document.createTextNode(option));
+                questionDiv.appendChild(optionLabel);
+            });
+
+            questionsContainer.appendChild(questionDiv);
+        });
+
+        function calculateScore() {
+            let score = 0;
+            const totalQuestions = questions.length;
+            const incorrectAnswers = [];
+
+            questions.forEach((question, index) => {
+                const selectedOption = document.querySelector(`input[name="question${index}"]:checked`);
+
+                if (selectedOption) {
+                    if (selectedOption.value === question.correct) {
+                        score++;
+                    } else {
+                        incorrectAnswers.push(index + 1);
+                    }
+                } else {
+                    incorrectAnswers.push(index + 1);
+                }
+            });
+
+            const resultContainer = document.getElementById('resultContainer');
+            resultContainer.innerHTML = '';
+            const resultText = document.createElement('p');
+            const grade = (score / totalQuestions) * 10;
+            resultText.innerText = `Tu calificación es: ${grade.toFixed(2)} / 10`;
+            resultContainer.appendChild(resultText);
+
+            if (incorrectAnswers.length > 0) {
+                const incorrectText = document.createElement('p');
+                incorrectText.className = 'incorrect';
+                incorrectText.innerText = `Preguntas incorrectas: ${incorrectAnswers.join(', ')}`;
+                resultContainer.appendChild(incorrectText);
+            } else {
+                const correctText = document.createElement('p');
+                correctText.className = 'correct';
+                correctText.innerText = '¡Todas las respuestas son correctas!';
+                resultContainer.appendChild(correctText);
+            }
+        }
+    </script>
+</body>
+</html>
